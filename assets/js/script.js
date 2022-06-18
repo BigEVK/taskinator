@@ -46,8 +46,8 @@ var taskFormHandler = function (event) {
     formEl.reset();
 };
 var createTaskEl = function (taskDataObj) {
-    console.log(taskDataObj);
-    console.log(taskDataObj.status);
+    // console.log(taskDataObj);
+    // console.log(taskDataObj.status);
 
     var listItemEl = document.createElement("li");
 
@@ -70,6 +70,8 @@ var createTaskEl = function (taskDataObj) {
     tasksToDoEl.appendChild(listItemEl);
 
     taskIdCounter++;
+
+    saveTasks();
 };
 var createTaskActions = function(taskId) {
     var actionContainerEl = document.createElement("div");
@@ -141,7 +143,7 @@ var taskButtonHandler = function(event) {
 };
 
 var editTask = function(taskId) {
-    console.log("editing task #" + taskId);
+    // console.log("editing task #" + taskId);
     // get task list item element
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
     // get content from task and name type
@@ -174,6 +176,7 @@ var deleteTask = function(taskId) {
     }
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+    saveTasks();
 };
 
 var completeEditTask = function(taskName, taskType, taskId) {
@@ -197,9 +200,11 @@ var completeEditTask = function(taskName, taskType, taskId) {
     // reset the form by removing the task id and changing the text button back to normal
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Add Task";
+
+    saveTasks();
 };
 var taskStatusChangeHandler = function(event) {
-    console.log(event.target, event.target.getAttribute("data-task-id"));
+    // console.log(event.target, event.target.getAttribute("data-task-id"));
 
     // get the task item's id
     var taskId = event.target.getAttribute("data-task-id");
@@ -226,8 +231,13 @@ var taskStatusChangeHandler = function(event) {
             tasks[i].status = statusValue;
         }
     }
-    console.log(tasks);
+    // console.log(tasks);
+    saveTasks();
 };
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 pageContentEl.addEventListener("click", taskButtonHandler);
 
